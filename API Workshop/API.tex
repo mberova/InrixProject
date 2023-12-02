@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage,enumitem,amssymb,amsmath,xcolor,graphicx,multicol}
+\usepackage[most]{tcolorbox}
+
+\title{\textbf{API Workshop Notes}}
+\author{Maria Berova}
+\date{\today}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand{\sub}{\subsection*}
+\newcommand{\im}{\text{Im}}
+\def\vvec#1#2#3#4{\begin{pmatrix} #1 \\ #2 \\ #3 \\ #4 \end{pmatrix}}
+\newtcolorbox{mybox}[2][]{colback=black!5!white,
+colframe=black!75!black,fonttitle=\bfseries,
+colbacktitle=black!85!black,enhanced,
+attach boxed title to top left={yshift=-2mm},
+title={#2}}
+
+\begin{document}
+\maketitle
+
+An API wraps together one or more endpoints
+
+\begin{itemize}
+  \item API is like a class
+  \item Endpoints are called with parameters and return a value (in JSON or XML)
+\end{itemize}
+
+Tokens
+
+\begin{itemize}
+  \item Used to control and monitor API access
+  \item API requires a token parameter -- will only return data on valid token
+  \item Generate token with username/password
+\end{itemize}
+
+CORS
+
+\begin{itemize}
+  \item Way of controlling who gets to call the API -- what platform. E.g., websites, servers, mobile app
+  \item Can whitelist a specific domain (like inrix.com)
+  \item For us the easiest way is to just allow all access
+\end{itemize}
+
+INRIX forces us to use CORS so that no one else can access the tokens for API. So we have to use CORS to access data.
+
+\begin{itemize}
+  \item Webapp requests Proxy API for token
+  \item Proxy sends username/pass to INRIX 
+  \item INRIX returns token to proxy, which returns to webapp
+  \item Webapp uses token to access data from INRIX
+\end{itemize}
+
+%% https://github.com/INRIX-Aashay-Motiwala/INRIX_Hack_Client_Server_Demo
+
+\end{document}
