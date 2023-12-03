@@ -4,7 +4,7 @@ import numpy as np
 PARAMS = [1, 1, 1, 1, 1, 1]
 
 def getCongestionList(t):
-    return getMap(PARAMS, t) # TODO: Let the user input these
+    return getMap(PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4], PARAMS[5], t) # TODO: Let the user input these
 
 ## TODO: Write a quicker way to instantly get the most congested area?
 
@@ -26,7 +26,7 @@ def getRoutes(x, t0):
     for i in range(x-1):
         nextList = getCongestionList(t0 + t)
         cur = getMaxCongestion(nextList)
-        if (res[0] = cur): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
+        if (res[0][0] == cur.latitude & res[0][1] == cur.longitude): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
             cur = get2MaxCongestion(nextList)
         # insert the stop at the optimal spot
         addResults = addStop(cur, res)
@@ -60,9 +60,10 @@ def expectedTime(s1, s2):
     return None
     # expectedTime[0] : not congested, expectedTime[1] : congested
 
-# Returns the expected reduction in congestion for an optimal route given a number of stops and time interval t
-def reductionAverage(x, t):
-    routes = getRoutes(x, t)
+# Returns the expected reduction in congestion for an optimal route given a number of stops
+def reductionAverage(x, t0):
+    print("in reductionaverage")
+    routes = getRoutes(x, t0)
     sum = 0
     weight = 0
     for s in x:
