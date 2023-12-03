@@ -1,6 +1,7 @@
 import datetime
 import requests
 import json
+import numpy
 
 class Cong:
     def __init__(self, lat, long, cong):
@@ -73,4 +74,4 @@ def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
         curr_lo1 += loinc
         curr_lo2 += loinc
         
-    return res
+    return numpy.array(res)

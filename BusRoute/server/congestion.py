@@ -1,8 +1,8 @@
 import datetime
 import requests
 import json
+import numpy
 
-# Class to store congestion data for a square in a partition of the given area
 class Cong:
     def __init__(self, lat, long, cong):
         self.latitude = lat
@@ -12,7 +12,6 @@ class Cong:
     def __str__(self):
         return f'latitude: {self.latitude}\nlongitude: {self.longitude}\ncongestion: {self.congestion}'
 
-# Returns the congestion for a given box
 def congestion(startTime, box):
     url = f"https://api.iq.inrix.com/v1/segments/speed?SpeedOutputFields=SpeedBucket&box={box}&StartTime={start}"
     headers = {
@@ -31,7 +30,6 @@ def congestion(startTime, box):
             c += 1
     return s/c
 
-# Returns an array of Cong for a subdivision of the given area
 def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
     box = f'{la1}%7C{lo1},{la2}%7C{lo2}'
         
@@ -76,4 +74,4 @@ def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
         curr_lo1 += loinc
         curr_lo2 += loinc
         
-    return res
+    return numpy.array(res)
