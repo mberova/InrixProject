@@ -14,6 +14,14 @@
             position: relative;
         }
 
+        img{
+            -khtml-user-select: none;
+            -o-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
         #selected-image {
             width: 100%;
             height: auto;
@@ -28,43 +36,53 @@
     </style>
     <title>Square Selector</title>
 </head>
+
 <body>
     <div id="image-container">
-        <img id="selected-image" src="your_image.png" alt="Imge">
+        <img width="700" height="700" unselectable="on" draggable="false" src="map.png">
         <div id="square"></div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const imageContainer = document.getElementById('image-container');
-            const selectedImage = document.getElementById('selected-image');
             const square = document.getElementById('square');
+
+            // const dim = {x: , y: }
+
+            // imageContainer.
 
             let startPoint = null;
             let endPoint = null;
+            let mouseDown = true;
 
             imageContainer.addEventListener('mousedown', handleMouseDown);
             imageContainer.addEventListener('mousemove', handleMouseMove);
             imageContainer.addEventListener('mouseup', handleMouseUp);
 
             function handleMouseDown(event) {
+                mouseDown = true;
                 startPoint = { x: event.clientX, y: event.clientY };
                 endPoint = { x: event.clientX, y: event.clientY };
                 updateSquare();
             }
 
             function handleMouseMove(event) {
-                if (startPoint) {
+                if (startPoint && mouseDown) {
                     endPoint = { x: event.clientX, y: event.clientY };
                     updateSquare();
                 }
             }
 
             function handleMouseUp() {
-                startPoint = null;
+                mouseDown = false;
+                const spx = Math.min(startPoint.x, endPoint.x)/1000
+                const spy = Math.min(startPoint.y, endPoint.y)/500
+                const epx = Math.max(startPoint.x, endPoint.x)/1000
+                const epy = Math.max(startPoint.y, endPoint.y)/500
             }
 
             function updateSquare() {
-                if (startPoint && endPoint) {
+                if (startPoint && endPoint && mouseDown) {
                     const width = Math.abs(endPoint.x - startPoint.x);
                     const height = Math.abs(endPoint.y - startPoint.y);
 

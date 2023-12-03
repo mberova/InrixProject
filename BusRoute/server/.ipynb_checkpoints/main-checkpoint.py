@@ -4,6 +4,7 @@ from congestion import remove_duplicates as removePresent
 import numpy as np
 import math
 
+
 PARAMS = [37.699033,-122.491619,37.858031,-122.390381 , 10, 10]
 
 def getCongestionList(t):
