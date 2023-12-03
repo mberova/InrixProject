@@ -1,4 +1,5 @@
 from congestion import get_map as getMap 
+from congestion import minutes as minutes
 import numpy as np
 
 PARAMS = [1, 1, 1, 1, 1, 1]
@@ -57,8 +58,7 @@ def addStop(s, stops):
 
 # Returns the expected times (not congested and congested) to travel from s1 to s2
 def expectedTime(s1, s2):
-    return None
-    # expectedTime[0] : not congested, expectedTime[1] : congested
+    return [minutes([s1, s2], False), minutes([s1, s2], True)]
 
 # Returns the expected reduction in congestion for an optimal route given a number of stops
 def reductionAverage(x, t0):
@@ -66,31 +66,8 @@ def reductionAverage(x, t0):
     routes = getRoutes(x, t0)
     sum = 0
     weight = 0
-    for s in x:
+    for s in range(x-1):
+        
         sum += routes[s][1]*(1-(routes[s][0])/(routes[s][1]))
         weight += routes[s][1]
     return sum/weight
-
-# Returns the best number of stops to reduce congestion (percentage) for the given time
-def bestReductionForTime(t):
-    maxReduction = 0
-    bestAmount = 2
-    for i in range(2, 30): # fix the range, make it the cap on the # of stops
-        cur = reductionAverage(i, t)
-        if cur > max: 
-            maxReduction = cur
-            bestAmount = i
-    return [bestAmount, maxReduction]
-
-# Returns the optimal sequence of bus routes
-def bestRoutes():
-    bestReduction = 0
-    bestStops = 2
-    bestTime = 0
-    for i in range(5): # fix the range, make it the intervals of time
-        cur = bestReductionForTime(i)
-        if cur[1] > bestReduction:
-            bestReduction = cur[1]
-            bestStops = cur[0]
-            bestTime = i
-    return getRoutes(bestStops, bestTime)
