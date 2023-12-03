@@ -9,7 +9,7 @@ CORS(app)
 
 @app.route('/api/opt', methods = ['GET'])
 def opt(): 
-    res = optimize(request) # TODO: Convert this to JSON
+    res = optimize() # TODO: Convert this to JSON
     return res
 
 @app.route('/home', methods = ['GET'])

@@ -9,10 +9,9 @@ def f(x):
     return -reductionAverage(x, t0)
 
 # Returns the best route as a sequence of stops
-def opt(request):
+def opt():
     res = minimize_scalar(f)
-    t0 = request.args.get('time')
-    ret = getRoutes(math.ceil(res.x), t0, request)
+    ret = getRoutes(math.ceil(res.x), t0)
     return ret
 
 #opt()

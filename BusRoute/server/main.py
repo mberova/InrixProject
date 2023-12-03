@@ -4,9 +4,7 @@ from congestion import remove_duplicates as removePresent
 import numpy as np
 import math
 
-PARAMS = []#[37.699033,-122.491619,37.858031,-122.390381 
-#, 10, 10]
-req = False
+PARAMS = [37.699033,-122.491619,37.858031,-122.390381 , 10, 10]
 
 def getCongestionList(t):
     return getMap(PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4], PARAMS[5], t) # TODO: Let the user input these
@@ -25,10 +23,7 @@ def congToTuple(c):
     return (c.latitude, c.longitude)
 
 # Returns the optimal sequence of stops (optimal in the sense that people will prefer to take the bus) for a given number of stops & given time interval t between stops
-def getRoutes(x, t0, request=None):
-    if not req or request is none:
-        ps = ['lat1', 'long1', 'lat2', 'long2', 'latdiv', 'longdiv']
-        PARAMS = [request.args.get(i) for i in ps]
+def getRoutes(x, t0):
     # first = getCongestionList(t0)
     # if (x == len(first)): 
     #     return first
