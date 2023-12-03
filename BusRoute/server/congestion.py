@@ -63,6 +63,16 @@ def congestion(startTime, box):
             c += 1
     return s/c
 
+def remove_duplicates(congs, to_remove, la1, lo1, la2, lo2, ladiv, lodiv):
+    lainc = (la2-la1)/ladiv
+    loinc = (lo2-lo1)/lodiv
+    for lat,long in to_remove:
+        col = (lat-la1)/lainc
+        row = (long-lo1)/loinc
+        congs.remove(row*lodiv+col)
+        
+    
+
 def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
     box = f'{la1}%7C{lo1},{la2}%7C{lo2}'
         

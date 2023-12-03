@@ -8,5 +8,10 @@ def opt():
     res = optimize() # TODO: Convert this to JSON
     return res
 
+@app.route('/home', methods = ['GET'])
+def home(): 
+    res = optimize() # TODO: Convert this to JSON
+    return res
+
 if __name__ == '__main__':
     app.run(debug=True)
