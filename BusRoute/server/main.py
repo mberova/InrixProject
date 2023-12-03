@@ -1,33 +1,60 @@
-RAD = 5 # radius given by client
-C = [10,50] # lat/long given by client
+import get_map from congestion as getMap 
+
+class Square:
+    def __init__(self, lat, long):
+        self.latitude = lat
+        self.longitude = long
+    
+    def __str__(self):
+        return f'latitude: {self.latitude}\nlongitude: {self.longitude}'
+
+PARAMS = [1, 1, 1, 1, 1, 1]
 
 def getCongestionList(t):
-    # return a ORDERED list of congested areas within the given circle using API, at time t
-    return None
+    return getMap(params, t) # TODO: Let the user input these
 
 ## TODO: Write a quicker way to instantly get the most congested area?
 
+def getMaxCongestion(t):
+    
+
+def get2MaxCongestion(t):
+
 # Returns the optimal sequence of stops (optimal in the sense that people will prefer to take the bus) for a given number of stops & given time interval t between stops
-def getRoutes(x, t):
+def getRoutes(x, t0):
     res = [getCongestionList(0)[0]]
+    t = 0
     for i in range(x-1):
-        nextList = getCongestionList(t*i)
+        nextList = getCongestionList(t0 + t)
         cur = nextList[0]
         if (res[0] = cur): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
             cur = nextList[1]
-        if addStop(cur, res): # if adding the stop is beneficial, we add it
-            res.append(cur)
+        # insert the stop at the optimal spot
+        addResults = addStop(cur, res)
+        res.insert(cur, addStop[0])
+        t += addResults[1]
     return res
 
-# Returns the difference in time between getting to a stop directly and taking the bus there
+# Adds the desired stop into the list of spot at the optimal time
 def addStop(s, stops):
-    # Calculate time it takes to get to stop by bus (no traffic)
-    busTime = 0
-    for i in range(len(stops)-1):
-        busTime += expectedTime(stops[i], stops[i+1])[0]
-    busTime += expectedTime(stops[len(stops)-1], s)[0]
+    # Set the inserting index + detour time to the front of list position
+    index = 0
+    dTime = expectedTime(s, stops[0])[0]
 
-    return expectedTime(stops[0], s)[1] - busTime
+    # Check all the indices between two existing stops
+    for i in range(1,len(stops)-1):
+        curDTime = expectedTime(stops[i-1], s)[0] + expectedTime(s, stops[i])[0]
+        if curDTime < dTime:
+            dTime = curDTime
+            index = i
+    
+    # Check the back of list position
+    lastDTime = expectedTime(stops[len(stops)-1], s)[0]
+    if lastDTime < dTime: 
+        dTime = lastDTime
+        index = len(stops)
+
+    return [index, dTime]
 
 # Returns the expected times (not congested and congested) to travel from s1 to s2
 def expectedTime(s1, s2):
@@ -35,6 +62,7 @@ def expectedTime(s1, s2):
     # expectedTime[0] : not congested, expectedTime[1] : congested
 
 # Returns the expected reduction in congestion for an optimal route given a number of stops and time interval t
+# TODO: Fix this
 def reductionAverage(x, t):
     routes = getRoutes(x, t)
     sum = 0
