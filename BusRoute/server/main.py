@@ -1,5 +1,6 @@
 from congestion import get_map as getMap 
 from congestion import minutes as minutes
+from congestion import remove_duplicates as removePresent
 import numpy as np
 import math
 
@@ -29,7 +30,7 @@ def getRoutes(x, t0):
     t = 0
     x = math.floor(x)
     for i in range(x-1):
-        nextList = getCongestionList(t0 + t)
+        nextList = removePresent(getCongestionList(t0 + t), res, PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4], PARAMS[5])
         cur = congToTuple(getMaxCongestion(nextList))
         if (res[0][0] == cur[0] and res[0][1] == cur[1]): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
             cur = congToTuple(get2MaxCongestion(nextList))
@@ -37,14 +38,7 @@ def getRoutes(x, t0):
         addResults = addStop(cur, res)
         res.insert(addResults[0], cur)
         t += addResults[1]
-    return removeDuplicates(res)
-
-def removeStops(areas, stops):
-    for s in stops:
-        areas.remove()
-
-def removeDuplicates(l):
-    return list(dict.fromkeys(l))
+    return res
 
 # Adds the desired stop into the list of spot at the optimal time
 def addStop(s, stops):
