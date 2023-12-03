@@ -1,7 +1,29 @@
-import datetime
-import requests
-import json
-import numpy
+from core import *
+
+def minutes(waypoints):
+    url = f"https://api.iq.inrix.com/findRoute?useTraffic=false"
+    wp = []
+    for i,(lat,long) in enumerate(waypoints):
+        if i <= 10:
+            url+=f'&wp_{i}={lat},{long}'
+        else:
+            wp.append((lat,long))
+            
+    headers = {
+      'Authorization': f'Bearer {get_token()[0]}'
+    }
+
+    response = requests.request("GET", url, headers=headers, data={})
+    
+    m = None
+    
+    try:
+        m = int(response.text.split('uncongestedTravelTimeMinutes="')[1][:2])
+    except:
+        m = 0
+    if len(wp) == 0:
+        return m
+    return m + minutes(wp)
 
 class Cong:
     def __init__(self, lat, long, cong):

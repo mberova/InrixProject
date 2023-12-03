@@ -1,7 +1,29 @@
-import datetime
-import requests
-import json
-import numpy
+from core import *
+
+def minutes(waypoints):
+    url = f"https://api.iq.inrix.com/findRoute?useTraffic=false"
+    wp = []
+    for i,(lat,long) in enumerate(waypoints):
+        if i <= 10:
+            url+=f'&wp_{i}={lat},{long}'
+        else:
+            wp.append((lat,long))
+            
+    headers = {
+      'Authorization': f'Bearer {get_token()[0]}'
+    }
+
+    response = requests.request("GET", url, headers=headers, data={})
+    
+    m = None
+    
+    try:
+        m = int(response.text.split('uncongestedTravelTimeMinutes="')[1][:2])
+    except:
+        m = 0
+    if len(wp) == 0:
+        return m
+    return m + minutes(wp)
 
 class Cong:
     def __init__(self, lat, long, cong):
@@ -11,9 +33,6 @@ class Cong:
     
     def __str__(self):
         return f'latitude: {self.latitude}\nlongitude: {self.longitude}\ncongestion: {self.congestion}'
-    
-    def __lt__(self, other):
-         return self.congestion < other.congestion
 
 def congestion(startTime, box):
     url = f"https://api.iq.inrix.com/v1/segments/speed?SpeedOutputFields=SpeedBucket&box={box}&StartTime={start}"
@@ -31,7 +50,7 @@ def congestion(startTime, box):
         if 'speedBucket' in segment:
             s += segment['speedBucket']
             c += 1
-    return 3-s/c
+    return s/c
 
 def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
     box = f'{la1}%7C{lo1},{la2}%7C{lo2}'
