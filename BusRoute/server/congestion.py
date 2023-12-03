@@ -22,7 +22,7 @@ def minutes(waypoints, useTraffic):
     try:
         m = int(response.text.split(text)[1][:2])
     except:
-        m = 0
+        m = 1
     if len(wp) == 0:
         return m
     return m + minutes(wp)
@@ -35,6 +35,15 @@ class Cong:
     
     def __str__(self):
         return f'latitude: {self.latitude}\nlongitude: {self.longitude}\ncongestion: {self.congestion}'
+    
+    def __lt__(self, other):
+        return self.congestion < other.congestion
+    
+    def __gt__(self, other):
+        return self.congestion > other.congestion
+    
+    def __ge__(self, other):
+        return self.congestion >= other.congestion
 
 def congestion(startTime, box):
     url = f"https://api.iq.inrix.com/v1/segments/speed?SpeedOutputFields=SpeedBucket&box={box}&StartTime={start}"

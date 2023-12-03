@@ -1,8 +1,9 @@
 from congestion import get_map as getMap 
 from congestion import minutes as minutes
 import numpy as np
+import math
 
-PARAMS = [0, 0, 0, 0, 1, 1]
+PARAMS = [37.699033, -122.491619, 37.858031, -122.390381, 10, 10]
 
 def getCongestionList(t):
     print("in getCongestionList")
@@ -26,16 +27,24 @@ def congToTuple(c):
 def getRoutes(x, t0):
     res = [congToTuple(getMaxCongestion(getCongestionList(t0)))]
     t = 0
+    x = math.floor(x)
     for i in range(x-1):
         nextList = getCongestionList(t0 + t)
-        cur = getMaxCongestion(nextList)
-        if (res[0][0] == cur.latitude & res[0][1] == cur.longitude): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
-            cur = get2MaxCongestion(nextList)
+        cur = congToTuple(getMaxCongestion(nextList))
+        if (res[0][0] == cur[0] and res[0][1] == cur[1]): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
+            cur = congToTuple(get2MaxCongestion(nextList))
         # insert the stop at the optimal spot
         addResults = addStop(cur, res)
-        res.insert(cur, addStop[0])
+        res.insert(addResults[0], cur)
         t += addResults[1]
-    return res
+    return removeDuplicates(res)
+
+def removeStops(areas, stops):
+    for s in stops:
+        areas.remove()
+
+def removeDuplicates(l):
+    return list(dict.fromkeys(l))
 
 # Adds the desired stop into the list of spot at the optimal time
 def addStop(s, stops):
@@ -69,9 +78,11 @@ def reductionAverage(x, t0):
     routes = getRoutes(x, t0)
     sum = 0
     weight = 0
+    x = math.floor(x)
     for i in range(x-1):
         print ("in loop")
-        curTime = expectedTime(congToTuple(routes[i]), congToTuple(routes[i+1]))
+        curTime = expectedTime(routes[i], routes[i+1])
         sum += curTime[1]*(1-(curTime[0]/curTime[1]))
         weight += curTime[1]
+    if (weight == 0): weight = 1
     return sum/weight
