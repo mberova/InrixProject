@@ -1,11 +1,24 @@
-RAD = 5 # radius given by client
-C = [10,50] # lat/long given by client
+import get_map from congestion as getMap 
+
+class Square:
+    def __init__(self, lat, long):
+        self.latitude = lat
+        self.longitude = long
+    
+    def __str__(self):
+        return f'latitude: {self.latitude}\nlongitude: {self.longitude}'
+
+PARAMS = [1, 1, 1, 1, 1, 1]
 
 def getCongestionList(t):
-    # return a ORDERED list of congested areas within the given circle using API, at time t
-    return None
+    return getMap(params, t) # TODO: Let the user input these
 
 ## TODO: Write a quicker way to instantly get the most congested area?
+
+def getMaxCongestion(t):
+    
+
+def get2MaxCongestion(t):
 
 # Returns the optimal sequence of stops (optimal in the sense that people will prefer to take the bus) for a given number of stops & given time interval t between stops
 def getRoutes(x, t0):
