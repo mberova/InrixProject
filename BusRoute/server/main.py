@@ -4,8 +4,12 @@ from congestion import remove_duplicates as removePresent
 import numpy as np
 import math
 
+<<<<<<< HEAD
 PARAMS = [37.699033,-122.491619,37.858031,-122.390381 
 , 30, 30]
+=======
+PARAMS = [37.699033,-122.491619,37.858031,-122.390381 , 10, 10]
+>>>>>>> c4035afc92667403852b583104d5bb284a0ab0ee
 
 def getCongestionList(t):
     return getMap(PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4], PARAMS[5], t) # TODO: Let the user input these
