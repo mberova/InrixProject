@@ -11,6 +11,7 @@ def f(x):
 # Returns the best route as a sequence of stops
 def opt():
     res = minimize_scalar(f)
+    print(res.x, res.fun)
     ret = getRoutes(math.ceil(res.x), t0)
     return ret
 
