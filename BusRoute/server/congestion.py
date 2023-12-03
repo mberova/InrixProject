@@ -7,11 +7,10 @@ def minutes(waypoints, useTraffic):
         text = 'travelTimeMinutes="'
     wp = []
     for i,(lat,long) in enumerate(waypoints):
-        if i <= 10:
-            url+=f'&wp_{i}={lat},{long}'
+        if i <= 9:
+            url+=f'&wp_{i+1}={lat},{long}'
         else:
             wp.append((lat,long))
-            
     headers = {
       'Authorization': f'Bearer {get_token()[0]}'
     }
@@ -20,9 +19,20 @@ def minutes(waypoints, useTraffic):
     m = None
     
     try:
-        m = int(response.text.split(text)[1][:2])
+        n = response.text.split(text)[1]
+        count = 0
+        m = 0
+        while True:
+            try:
+                m += int(n[count])*(10**count)
+                count+=1
+            except:
+                break
+        
+                
     except:
         m = 1
+        #print(response.text)
     if len(wp) == 0:
         return m
     return m + minutes(wp)
@@ -64,12 +74,14 @@ def congestion(startTime, box):
     return s/c
 
 def remove_duplicates(congs, to_remove, la1, lo1, la2, lo2, ladiv, lodiv):
+    congs = list(congs)
     lainc = (la2-la1)/ladiv
     loinc = (lo2-lo1)/lodiv
     for lat,long in to_remove:
         col = (lat-la1)/lainc
         row = (long-lo1)/loinc
-        numpy.delete(congs, int(row*lodiv+col))
+        congs.pop(int(row*lodiv+col))
+    return congs
     
 
 def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
