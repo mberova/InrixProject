@@ -44,8 +44,6 @@ def reductionAverage(x, t):
         weight += routes[s][1]
     return sum/weight
 
-# Use ML to maximize reductionAverage in x and t
-
 # Returns the cap on stops (where adding stops starts to make the route worse)
 def getStopCap(x, t):
 
