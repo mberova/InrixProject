@@ -15,4 +15,4 @@ def opt(request):
     ret = getRoutes(math.ceil(res.x), t0, request)
     return ret
 
-opt()
+#opt()
