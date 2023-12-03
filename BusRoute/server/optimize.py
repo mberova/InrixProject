@@ -11,3 +11,5 @@ def opt():
     init = [2, 1440]
     res = minimize(f, init, method='L-BFGS-B')
     return getRoutes(result.x[0], result.x[1])
+
+print(opt())

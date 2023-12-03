@@ -11,6 +11,9 @@ class Cong:
     
     def __str__(self):
         return f'latitude: {self.latitude}\nlongitude: {self.longitude}\ncongestion: {self.congestion}'
+    
+    def __lt__(self, other):
+         return self.congestion < other.congestion
 
 def congestion(startTime, box):
     url = f"https://api.iq.inrix.com/v1/segments/speed?SpeedOutputFields=SpeedBucket&box={box}&StartTime={start}"
@@ -28,7 +31,7 @@ def congestion(startTime, box):
         if 'speedBucket' in segment:
             s += segment['speedBucket']
             c += 1
-    return s/c
+    return 3-s/c
 
 def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
     box = f'{la1}%7C{lo1},{la2}%7C{lo2}'

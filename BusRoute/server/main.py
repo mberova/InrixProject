@@ -1,34 +1,33 @@
-import get_map from congestion as getMap 
-
-class Square:
-    def __init__(self, lat, long):
-        self.latitude = lat
-        self.longitude = long
-    
-    def __str__(self):
-        return f'latitude: {self.latitude}\nlongitude: {self.longitude}'
+from congestion import get_map as getMap 
+import numpy as np
 
 PARAMS = [1, 1, 1, 1, 1, 1]
 
 def getCongestionList(t):
-    return getMap(params, t) # TODO: Let the user input these
+    return getMap(PARAMS, t) # TODO: Let the user input these
 
 ## TODO: Write a quicker way to instantly get the most congested area?
 
-def getMaxCongestion(t, list):
-    return 
+def getMaxCongestion(list):
+    return np.max(list)
 
-def get2MaxCongestion(t):
+def get2MaxCongestion(list):
+    maxIndex = np.argmax(list)
+    arr = np.delete(list, maxIndex)
+    return np.max(arr)
+
+def congToTuple(c):
+    return (c.latitude, c.longitude)
 
 # Returns the optimal sequence of stops (optimal in the sense that people will prefer to take the bus) for a given number of stops & given time interval t between stops
 def getRoutes(x, t0):
-    res = [getCongestionList(0)[0]]
+    res = [congToTuple(getMaxCongestion(getCongestionList(t0)))]
     t = 0
     for i in range(x-1):
         nextList = getCongestionList(t0 + t)
-        cur = nextList[0]
+        cur = getMaxCongestion(nextList)
         if (res[0] = cur): # check if the next most congested area is the same as the current one, in which case we want to the the second most congested area (so that the bus actually moves)
-            cur = nextList[1]
+            cur = get2MaxCongestion(nextList)
         # insert the stop at the optimal spot
         addResults = addStop(cur, res)
         res.insert(cur, addStop[0])
@@ -62,7 +61,6 @@ def expectedTime(s1, s2):
     # expectedTime[0] : not congested, expectedTime[1] : congested
 
 # Returns the expected reduction in congestion for an optimal route given a number of stops and time interval t
-# TODO: Fix this
 def reductionAverage(x, t):
     routes = getRoutes(x, t)
     sum = 0
@@ -71,9 +69,6 @@ def reductionAverage(x, t):
         sum += routes[s][1]*(1-(routes[s][0])/(routes[s][1]))
         weight += routes[s][1]
     return sum/weight
-
-# Returns the cap on stops (where adding stops starts to make the route worse)
-def getStopCap(x, t):
 
 # Returns the best number of stops to reduce congestion (percentage) for the given time
 def bestReductionForTime(t):
