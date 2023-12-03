@@ -13,7 +13,6 @@ def getCongestionList(t):
 ## TODO: Write a quicker way to instantly get the most congested area?
 
 def getMaxCongestion(list):
-    print("in getMaxCongestion")
     return np.max(list)
 
 def get2MaxCongestion(list):
@@ -22,10 +21,14 @@ def get2MaxCongestion(list):
     return np.max(arr)
 
 def congToTuple(c):
+    print(c)
     return (c.latitude, c.longitude)
 
 # Returns the optimal sequence of stops (optimal in the sense that people will prefer to take the bus) for a given number of stops & given time interval t between stops
 def getRoutes(x, t0):
+    first = getCongestionList(t0)
+    if (x == len(first)): 
+        return first
     res = [congToTuple(getMaxCongestion(getCongestionList(t0)))]
     t = 0
     x = math.floor(x)

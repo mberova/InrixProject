@@ -69,7 +69,7 @@ def remove_duplicates(congs, to_remove, la1, lo1, la2, lo2, ladiv, lodiv):
     for lat,long in to_remove:
         col = (lat-la1)/lainc
         row = (long-lo1)/loinc
-        numpy.delete(congs, row*lodiv+col)
+        numpy.delete(congs, int(row*lodiv+col))
     
 
 def get_map(la1, lo1, la2, lo2, ladiv, lodiv, start):
