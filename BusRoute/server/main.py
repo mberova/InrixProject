@@ -2,14 +2,16 @@ from congestion import get_map as getMap
 from congestion import minutes as minutes
 import numpy as np
 
-PARAMS = [1, 1, 1, 1, 1, 1]
+PARAMS = [0, 0, 0, 0, 1, 1]
 
 def getCongestionList(t):
+    print("in getCongestionList")
     return getMap(PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4], PARAMS[5], t) # TODO: Let the user input these
 
 ## TODO: Write a quicker way to instantly get the most congested area?
 
 def getMaxCongestion(list):
+    print("in getMaxCongestion")
     return np.max(list)
 
 def get2MaxCongestion(list):
@@ -58,6 +60,7 @@ def addStop(s, stops):
 
 # Returns the expected times (not congested and congested) to travel from s1 to s2
 def expectedTime(s1, s2):
+    print("in expectedtime")
     return [minutes([s1, s2], False), minutes([s1, s2], True)]
 
 # Returns the expected reduction in congestion for an optimal route given a number of stops
@@ -66,8 +69,9 @@ def reductionAverage(x, t0):
     routes = getRoutes(x, t0)
     sum = 0
     weight = 0
-    for s in range(x-1):
-        
-        sum += routes[s][1]*(1-(routes[s][0])/(routes[s][1]))
-        weight += routes[s][1]
+    for i in range(x-1):
+        print ("in loop")
+        curTime = expectedTime(congToTuple(routes[i]), congToTuple(routes[i+1]))
+        sum += curTime[1]*(1-(curTime[0]/curTime[1]))
+        weight += curTime[1]
     return sum/weight
