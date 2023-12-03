@@ -1,7 +1,10 @@
 from core import *
 
-def minutes(waypoints):
-    url = f"https://api.iq.inrix.com/findRoute?useTraffic=false"
+def minutes(waypoints, useTraffic):
+    url = f"https://api.iq.inrix.com/findRoute?useTraffic=true"
+    text = 'uncongestedTravelTimeMinutes="'
+    if useTraffic:
+        text = 'travelTimeMinutes="'
     wp = []
     for i,(lat,long) in enumerate(waypoints):
         if i <= 10:
@@ -12,13 +15,12 @@ def minutes(waypoints):
     headers = {
       'Authorization': f'Bearer {get_token()[0]}'
     }
-
     response = requests.request("GET", url, headers=headers, data={})
     
     m = None
     
     try:
-        m = int(response.text.split('uncongestedTravelTimeMinutes="')[1][:2])
+        m = int(response.text.split(text)[1][:2])
     except:
         m = 0
     if len(wp) == 0:
