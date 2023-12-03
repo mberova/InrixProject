@@ -39,7 +39,7 @@
 
 <body>
     <div id="image-container">
-        <img width="700" height="700" unselectable="on" draggable="false" src="map.png">
+        <img width="700" height="700" unselectable="on" draggable="false" src="{{ url_for('static', filename='map.png') }}">
         <div id="square"></div>
     </div>
     <script>
