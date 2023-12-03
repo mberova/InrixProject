@@ -34,6 +34,7 @@ def expectedTime(s1, s2):
     return None
     # expectedTime[0] : not congested, expectedTime[1] : congested
 
+# Returns the expected reduction in congestion for an optimal route given a number of stops and time interval t
 def reductionAverage(x, t):
     routes = getRoutes(x, t)
     sum = 0
@@ -42,6 +43,8 @@ def reductionAverage(x, t):
         sum += routes[s][1]*(1-(routes[s][0])/(routes[s][1]))
         weight += routes[s][1]
     return sum/weight
+
+# Use ML to maximize reductionAverage in x and t
 
 # Returns the cap on stops (where adding stops starts to make the route worse)
 def getStopCap(x, t):
